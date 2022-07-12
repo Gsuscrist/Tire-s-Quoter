@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
 <meta nawe="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="src/Sripts/css/start-style.css"
+<link rel="stylesheet" href="src/Sripts/css/start-style.css">
     </head>
     <body>
         <div class="container-form sign-up">
@@ -21,7 +21,7 @@
                 <input type="text" placeholder="Usuario" id="txtUser">
                 <input type="password" placeholder="Contraseña" id="txtPass">
                 <input type="password" placeholder="Confirme Contraseña" id="txtPassR">
-                <input type="button" value="Registrarse">
+                <input type="button" value="Registrarse" onclick="registrar()">
 
 
 
@@ -30,11 +30,11 @@
 
         <div class="container-form sign-in">
             <form class="formulario">
-                <h2 class="create-account">Iniciar sesions</h2>
+                <h2 class="create-account">Iniciar sesion</h2>
                 <p class="cuenta-gratis">Aun no tienes cuenta?</p>
-                <input type="email" placeholder="correo">
-                <input type="password" placeholder="Contraseña">
-                <input type="button" value="Iniciar Sesion">
+                <input type="email" placeholder="correo" id="txtmail">
+                <input type="password" placeholder="Contraseña" id="txtpssw">
+                <input type="button" value="Iniciar Sesion" onclick="inicioSesion()">
             </form>
             <div class="welcome-back">
                 <div class="message">
@@ -47,6 +47,7 @@
         </div>
 
     <script src="src/Sripts/js/start.js"></script>
+    <script src="src/Sripts/js/Registro.js"></script>
     <script src="conexion.js"></script>
     </body>
 </html>

@@ -6,7 +6,7 @@ app.on('ready', ()=>{
         nodeIntegration : true,
         contextIsolation: false}
     });   
-    win.loadFile("Start.html");
+    win.loadFile("home.html");
     win.show()
 
     win.on('closed', ()=>{
