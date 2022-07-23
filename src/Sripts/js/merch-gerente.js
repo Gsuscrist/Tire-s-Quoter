@@ -1,8 +1,8 @@
-
 const conexion = require('./conexion');
 
+
 class producto{
-    constructor( id, imagen, modelo, medida, rC, rV, uso, cantidad, precio){
+    constructor( id, imagen, modelo, medida, rC, rV, uso, cantidad, cliente){
         this.id=id;
         this.imagen=imagen;
         this.modelo=modelo;
@@ -11,7 +11,7 @@ class producto{
         this.rV=rV;
         this.uso=uso;
         this.cantidad=cantidad;
-        this.precio=precio;
+        this.cliente=cliente;
     }
 }
 
@@ -180,7 +180,7 @@ inOrder(Nodo = this.raiz) {
     rango_carga.push(Nodo.obj.rC);
     rango_vel.push(Nodo.obj.rV);
     uso.push(Nodo.obj.uso);
-    precio.push(Nodo.obj.precio);
+    cliente.push(Nodo.obj.cliente);
     cantidad.push(Nodo.obj.cantidad);
 
 
@@ -188,9 +188,8 @@ inOrder(Nodo = this.raiz) {
 }
 
 }
-
-
 var tree =new Tree();
+
 
 let datos=[];
 let imagen=[];
@@ -201,12 +200,14 @@ var medida=[];
 let rango_carga=[];
 let rango_vel=[];
 let uso=[];
-let precio=[];
+let cliente=[];
 let cantidad=[];
 
-function busqueda(){
+
+
+function merch(){
     //accion de limpieza de tabla
-    const $elemento = document.querySelector("#table");
+    const $elemento = document.querySelector(".table");
     $elemento.innerHTML=`<table class="table" id="table">
     <th class="column" id="imagen"></th>
     <th class="column" id="marca">Marca</th>
@@ -215,13 +216,11 @@ function busqueda(){
     <th class="column" id="cw">Rango de Carga</th>
     <th class="column" id="cv">Rango de Velocidad</th>
     <th class="column" id="uso">Tipo de Uso</th>
-    <th class="column" id="precio">Precio</th>
-    <th class="column" id="cant"> Cantidad</th>
+    <th class="column" id="precio">No cliente</th>
     <th class="column" id="opc"> Opciones</th>
 </table>`;
     //metodo de busqueda y organizacion
-    var medida = document.getElementById("buscar").value;
-    $query = `select *from llanta where medida ='${medida}';`
+    $query = `select *from mercancia_apartada;`
     let tablaR = document.getElementById("table");
 
     conexion.query($query, function (err, rows) {
@@ -232,10 +231,9 @@ function busqueda(){
             return;
         }else{
             if(rows.length===0){
-                alert("Producto no encontrado")
             }else{
                 for(i=0;i<rows.length;i++){
-                    tree.Agregar(rows[i].marca, new producto(rows[i].id_llanta, rows[i].imagen, rows[i].modelo, rows[i].medida, rows[i].rango_carga, rows[i].rango_vel, rows[i].uso, rows[i].cantidad, rows[i].precio))
+                    tree.Agregar(rows[i].marca, new producto(rows[i].id_llanta, rows[i].imagen, rows[i].modelo, rows[i].medida, rows[i].rango_carga, rows[i].rango_vel, rows[i].uso, rows[i].cantidad, rows[i].id_cliente))
                 }
                 tree.inOrder();
                 for(i=0;i<datos.length;i++){
@@ -249,8 +247,7 @@ function busqueda(){
                     var celdarangoV = newRow.insertCell(5);
                     var celdauso = newRow.insertCell(6);
                     var celdaprecio = newRow.insertCell(7);
-                    var celdacant = newRow.insertCell(8);
-                    var celdaopc = newRow.insertCell(9);
+                    var celdaopc = newRow.insertCell(8);
                     //aca dices la informacion
                     var txtimg = `<img class="size" src="${imagen[i]}">`;
                     var txtmarca = document.createTextNode(marca[i]);
@@ -259,9 +256,9 @@ function busqueda(){
                     var txtrangoW = document.createTextNode(rango_carga[i]);
                     var txtrangoV = document.createTextNode(rango_vel[i]);
                     var txtuso = document.createTextNode(uso[i]);
-                    var txtprecio = document.createTextNode(precio[i]);
-                    var txtcant = document.createTextNode(cantidad[i]);
-                    var txtopc =`<button id="btnver" class="bttnsee" value="${id[i]}">Ver</button>`
+                    var txtprecio = document.createTextNode(cliente[i]);
+                    var txtopc = `<button  id="btneliminar" class="bttndelete" value="${id[i]}"> Eliminar </button><br>
+                    <label id="theid" class="theid" hidden=hidden>${id[i]}</label>`
                     //aca dices que poner y donde
                     celdaimg.innerHTML+=txtimg;
                 celdamarca.appendChild(txtmarca);
@@ -271,22 +268,39 @@ function busqueda(){
                 celdarangoV.appendChild(txtrangoV);
                 celdauso.appendChild(txtuso);
                 celdaprecio.appendChild(txtprecio);
-                celdacant.appendChild(txtcant);
                 celdaopc.innerHTML+=txtopc;
+
                 }
+              
 
             }
-
-            var boton=document.querySelectorAll('.bttnsee')
+            var boton=document.querySelectorAll('.bttndelete')
             boton.forEach(el=>{
                 el.addEventListener('click',(e)=>{
+                   
                     console.log(e.target.value);
-                    localStorage.setItem("product", JSON.stringify(e.target.value));
-                    
-                    window.location.href="product.html";
-                })
+                    localStorage.setItem("itemselect",JSON.stringify(e.target.value));
+                    var the_id=JSON.parse(localStorage.getItem("itemselect"))
 
-            })
+                    tree.Borrar(e.target.value);
+                    $query=`delete from mercancia_apartada where id_llanta=${the_id};`;
+                    conexion.query($query, function (err, rows) {
+                        if (err) {
+                            console.log("error en el query");
+                            console.log(err);
+                            return;
+                        }else{
+                            console.log("exito");
+                            window.location.href="merch-gerente.html"
+                        }
+                        
+                    })
+                    tree.inOrder();
+                    /**prueba */ 
+                    
+
+                });
+            });
 
         }
     });

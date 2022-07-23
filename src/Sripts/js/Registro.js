@@ -33,11 +33,10 @@ const inicioSesion=()=>{
         if(err){
             console.log("error en el query");
             console.log(err);
-            alert("Usuario o contraseña incorrectos");
             return;
         }else{
             if(rows.length===0){
-                alert("Usuario o Contraseña invalidos")}
+                alert("Usuario y/o Contraseña invalidos")}
                 else{
 
                     if(pass===rows[0].contraseña){
@@ -47,6 +46,7 @@ const inicioSesion=()=>{
                             //pendiente agregar hoja pal gerente
                             window.location.href="home-gerente.html"
                         }else{
+                            localStorage.setItem("usuario",JSON.stringify(rows[0].id_usuario))
                             window.location.href="home.html";
                         }
                     }else{

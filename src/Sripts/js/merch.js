@@ -1,4 +1,3 @@
-
 const conexion = require('./conexion');
 
 class producto{
@@ -188,9 +187,8 @@ inOrder(Nodo = this.raiz) {
 }
 
 }
-
-
 var tree =new Tree();
+var tree2=new Tree();
 
 let datos=[];
 let imagen=[];
@@ -204,9 +202,11 @@ let uso=[];
 let precio=[];
 let cantidad=[];
 
-function busqueda(){
+
+
+function merch(){
     //accion de limpieza de tabla
-    const $elemento = document.querySelector("#table");
+    const $elemento = document.querySelector(".table");
     $elemento.innerHTML=`<table class="table" id="table">
     <th class="column" id="imagen"></th>
     <th class="column" id="marca">Marca</th>
@@ -217,11 +217,10 @@ function busqueda(){
     <th class="column" id="uso">Tipo de Uso</th>
     <th class="column" id="precio">Precio</th>
     <th class="column" id="cant"> Cantidad</th>
-    <th class="column" id="opc"> Opciones</th>
 </table>`;
     //metodo de busqueda y organizacion
-    var medida = document.getElementById("buscar").value;
-    $query = `select *from llanta where medida ='${medida}';`
+    var usuario= JSON.parse(localStorage.getItem("usuario"));
+    $query = `select *from mercancia_apartada where id_cliente ='${usuario}';`
     let tablaR = document.getElementById("table");
 
     conexion.query($query, function (err, rows) {
@@ -232,7 +231,6 @@ function busqueda(){
             return;
         }else{
             if(rows.length===0){
-                alert("Producto no encontrado")
             }else{
                 for(i=0;i<rows.length;i++){
                     tree.Agregar(rows[i].marca, new producto(rows[i].id_llanta, rows[i].imagen, rows[i].modelo, rows[i].medida, rows[i].rango_carga, rows[i].rango_vel, rows[i].uso, rows[i].cantidad, rows[i].precio))
@@ -250,7 +248,6 @@ function busqueda(){
                     var celdauso = newRow.insertCell(6);
                     var celdaprecio = newRow.insertCell(7);
                     var celdacant = newRow.insertCell(8);
-                    var celdaopc = newRow.insertCell(9);
                     //aca dices la informacion
                     var txtimg = `<img class="size" src="${imagen[i]}">`;
                     var txtmarca = document.createTextNode(marca[i]);
@@ -261,7 +258,7 @@ function busqueda(){
                     var txtuso = document.createTextNode(uso[i]);
                     var txtprecio = document.createTextNode(precio[i]);
                     var txtcant = document.createTextNode(cantidad[i]);
-                    var txtopc =`<button id="btnver" class="bttnsee" value="${id[i]}">Ver</button>`
+                   
                     //aca dices que poner y donde
                     celdaimg.innerHTML+=txtimg;
                 celdamarca.appendChild(txtmarca);
@@ -272,25 +269,13 @@ function busqueda(){
                 celdauso.appendChild(txtuso);
                 celdaprecio.appendChild(txtprecio);
                 celdacant.appendChild(txtcant);
-                celdaopc.innerHTML+=txtopc;
+
+
                 }
+              
 
             }
-
-            var boton=document.querySelectorAll('.bttnsee')
-            boton.forEach(el=>{
-                el.addEventListener('click',(e)=>{
-                    console.log(e.target.value);
-                    localStorage.setItem("product", JSON.stringify(e.target.value));
-                    
-                    window.location.href="product.html";
-                })
-
-            })
-
+           
         }
     });
 }
-
-
-

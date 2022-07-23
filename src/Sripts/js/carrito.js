@@ -1,4 +1,3 @@
-
 const conexion = require('./conexion');
 
 class producto{
@@ -188,9 +187,8 @@ inOrder(Nodo = this.raiz) {
 }
 
 }
-
-
 var tree =new Tree();
+var tree2=new Tree();
 
 let datos=[];
 let imagen=[];
@@ -204,9 +202,11 @@ let uso=[];
 let precio=[];
 let cantidad=[];
 
-function busqueda(){
+
+
+function cart(){
     //accion de limpieza de tabla
-    const $elemento = document.querySelector("#table");
+    const $elemento = document.querySelector(".table");
     $elemento.innerHTML=`<table class="table" id="table">
     <th class="column" id="imagen"></th>
     <th class="column" id="marca">Marca</th>
@@ -220,8 +220,8 @@ function busqueda(){
     <th class="column" id="opc"> Opciones</th>
 </table>`;
     //metodo de busqueda y organizacion
-    var medida = document.getElementById("buscar").value;
-    $query = `select *from llanta where medida ='${medida}';`
+    var usuario= JSON.parse(localStorage.getItem("usuario"));
+    $query = `select *from waitlist where id_cliente ='${usuario}';`
     let tablaR = document.getElementById("table");
 
     conexion.query($query, function (err, rows) {
@@ -232,7 +232,6 @@ function busqueda(){
             return;
         }else{
             if(rows.length===0){
-                alert("Producto no encontrado")
             }else{
                 for(i=0;i<rows.length;i++){
                     tree.Agregar(rows[i].marca, new producto(rows[i].id_llanta, rows[i].imagen, rows[i].modelo, rows[i].medida, rows[i].rango_carga, rows[i].rango_vel, rows[i].uso, rows[i].cantidad, rows[i].precio))
@@ -261,7 +260,8 @@ function busqueda(){
                     var txtuso = document.createTextNode(uso[i]);
                     var txtprecio = document.createTextNode(precio[i]);
                     var txtcant = document.createTextNode(cantidad[i]);
-                    var txtopc =`<button id="btnver" class="bttnsee" value="${id[i]}">Ver</button>`
+                    var txtopc = `<button  id="btneliminar" class="bttndelete" value="${id[i]}"> Eliminar </button><br>
+                    <label id="theid" class="theid" hidden=hidden>${id[i]}</label>`
                     //aca dices que poner y donde
                     celdaimg.innerHTML+=txtimg;
                 celdamarca.appendChild(txtmarca);
@@ -273,23 +273,83 @@ function busqueda(){
                 celdaprecio.appendChild(txtprecio);
                 celdacant.appendChild(txtcant);
                 celdaopc.innerHTML+=txtopc;
+
                 }
+              
 
             }
-
-            var boton=document.querySelectorAll('.bttnsee')
+            var boton=document.querySelectorAll('.bttndelete')
             boton.forEach(el=>{
                 el.addEventListener('click',(e)=>{
+                   
                     console.log(e.target.value);
-                    localStorage.setItem("product", JSON.stringify(e.target.value));
-                    
-                    window.location.href="product.html";
-                })
+                    localStorage.setItem("itemselect",JSON.stringify(e.target.value));
+                    var the_id=JSON.parse(localStorage.getItem("itemselect"))
 
-            })
+                    tree.Borrar(e.target.value);
+                    $query=`delete from waitlist where id_llanta=${the_id};`;
+                    conexion.query($query, function (err, rows) {
+                        if (err) {
+                            console.log("error en el query");
+                            console.log(err);
+                            return;
+                        }else{
+                            console.log("exito");
+                            window.location.href="carrito.html"
+                        }
+                        
+                    })
+                    tree.inOrder();
+                    /**prueba */ 
+                    
+
+                });
+            });
 
         }
     });
+}
+
+
+function Apartar() {
+    var usuario= JSON.parse(localStorage.getItem("usuario"));
+    $query = `select *from waitlist where id_cliente ='${usuario}';`
+
+    conexion.query($query, function(err, rows){
+        if(err){
+            console.log("error en el query");
+            console.log(err);
+            return;
+        }else{
+            for(i=0;i<rows.length;i++){
+                $query=`insert into mercancia_apartada(id_llanta, marca, modelo, medida, rango_carga, rango_vel, uso, precio, cantidad, id_cliente, imagen)
+                Values (${rows[i].id_llanta}, '${rows[i].marca}', '${rows[i].modelo}', '${rows[i].medida}',${rows[i].rango_carga},'${rows[i].rango_vel}','${rows[i].uso}', ${rows[i].precio}, ${rows[i].cantidad}, ${usuario}, '${rows[i].imagen}');`   
+                conexion.query($query, function (err, rows) {
+                    if(err){
+                        console.log("error en el query");
+                        console.log(err);
+                        return
+                    }else{
+                        $query=`delete from waitlist where id_cliente=${usuario};`;
+                        conexion.query($query, function (err, rows){
+                            if(err){
+                                console.log("error en el query");
+                                console.log(err);
+                            }else{
+                                console.log("Eliminacion con Exito");
+                            }
+                        })
+
+                        console.log("exito");
+                        window.location.href="merch.html";
+                    }
+
+                })
+            }
+        }
+    })
+
+    
 }
 
 

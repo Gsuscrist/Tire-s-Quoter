@@ -260,8 +260,8 @@ function busqueda(){
                     var txtrangoV = document.createTextNode(rango_vel[i]);
                     var txtuso = document.createTextNode(uso[i]);
                     var txtprecio = document.createTextNode(precio[i]);
-                    var txtcant = document.createTextNode(cantidad[i]);
-                    var txtopc =`<button id="btnver" class="bttnsee" value="${id[i]}">Ver</button>`
+                    var txtcant = `<input class="merchcant" id="txtMerch${id[i]}" type="text" placeholder="nueva cantidad">`;
+                    var txtopc =`<button id="btnver" class="bttnsee" value="${id[i]}">Actualizar</button>`
                     //aca dices que poner y donde
                     celdaimg.innerHTML+=txtimg;
                 celdamarca.appendChild(txtmarca);
@@ -271,26 +271,34 @@ function busqueda(){
                 celdarangoV.appendChild(txtrangoV);
                 celdauso.appendChild(txtuso);
                 celdaprecio.appendChild(txtprecio);
-                celdacant.appendChild(txtcant);
+                celdacant.innerHTML+=txtcant;
                 celdaopc.innerHTML+=txtopc;
                 }
 
             }
 
             var boton=document.querySelectorAll('.bttnsee')
-            boton.forEach(el=>{
-                el.addEventListener('click',(e)=>{
-                    console.log(e.target.value);
-                    localStorage.setItem("product", JSON.stringify(e.target.value));
-                    
-                    window.location.href="product.html";
+                boton.forEach(el=>{
+                    el.addEventListener('click',(e)=>{
+                        console.log(e.target.value);
+                        localStorage.setItem("product", JSON.stringify(e.target.value));
+                        var newcant=document.getElementById(`txtMerch${e.target.value}`).value
+                        alert(newcant)
+
+                        $query=`UPDATE llanta SET cantidad=${newcant} WHERE id_llanta=${e.target.value}`
+                        conexion.query($query, function(err, rows){
+                            if(err){
+                                console.log("error en el query");
+                                console.log(err);
+                            }else{
+                                console.log("actualizacion exitosa");
+                                alert("Actualizacion exitosa");
+                            }
+                        })
+                  
+                    })
+    
                 })
-
-            })
-
         }
     });
 }
-
-
-

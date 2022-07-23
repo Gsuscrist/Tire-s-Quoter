@@ -61,88 +61,81 @@
     
 
     /** aca esta el estilo original del producto*/
+    .parent {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr) repeat(3,0);
+        grid-template-rows: repeat(3, 1fr) repeat(2, 0);
+        grid-column-gap: 10px;
+        grid-row-gap: 7px;
+        }
+        
+        .div1 {
+             grid-area: 1 / 1 / 4 / 2;
+             border: 2px solid #c4c6cf;
+             border-radius: 25px;
+            }
+        .div2 {
+             grid-area: 1 / 2 / 2 / 3;
+             height: 100px;
+             justify-items: center;
+             align-items: center;
+             margin: auto;
+             font-size: 35px;
+            }
+        .div3 {
+             grid-area: 2 / 2 / 3 / 3; 
+             height: 200px;
+             justify-items: center;
+             align-items: center;
+             margin: auto;
+             font-size: 25px;
+            }
+        .div4 {
+             grid-area: 3 / 2 / 4 / 3;
+             justify-items: center;
+             justify-content: space-between;
+             margin: auto;
+             font-size: 10px;
+            }
 
-    .rin7{
-        position: absolute;
-        left: 200px;
-        top: 200px;
-        cursor: pointer;
-        border: 2px solid #a3a3a3;
-        border-radius: 25px;
-    }
-    .rin7p{
-        position: relative;
-        width: 100px;
-        left: 50px;
-        top: 60px;
-        cursor: pointer;
-        border: 2px solid #a3a3a3;
-        border-radius: 25px;
-    }
-    
-    #vista{
-        width: 100%;
-        height: 100%;
-    }
-    
-    #info{
-        position : absolute;
-        width: 500px;
-        left: 800px;
-        top: 200px;
-        font: 1em arial;
-        font-size: 30px;
+
+        .productimg{
+            left:15%;
+            width: 150px;
+            height: 150px;
+            border: solid 1px #c4c6cf;
+            border-radius: 25px;
+        }
+
+        .bttn{
+            background-color: #c4c6cf;
+            padding: 10px;
+        }
+
+        selection{
+            font-size: 20px;
+        }
+        option{
+            font-size: 20px;
+        }
+
+        .stock{
+            justify-content: center;
+            
+        }
+
+        .inventario{
+            font-size: 15px;
+        }
+
+        .bttn{
+            background-color: #c4c6cf;
+            padding: 15px;
+            border-radius: 10px;
+            width: 300px;
+            font-size: medium;
+        }
         
-    }
-    
-    #precio{
-        position : absolute;
-        width: 500px;
-        left: 900px;
-        top: 350px;
-        font: 1em arial;
-        font-size: 50px;
-       
-    }
-    
-    #detalles{
-        position : absolute;
-        width: 400px;
-        left: 850px;
-        top: 420px;
-        font: 1em arial;
-        font-size: 20px;
-        
-    }
-    
-    #cantidad{
-        position : absolute;
-        width: 400px;
-        left: 880px;
-        top: 550px;
-        font: 1em arial;
-        font-size: 30px;
-        
-    }
-    
-    #select{
-        font: 1em arial;
-        font-size: 25px;
-        font: rgb(66, 65, 65);
-    }
-    
-    #botones{
-        position : absolute;
-        left: 320px;
-        top: 20px; 
-    }
-    
-    #boton{
-        color: #edf0f1;
-        padding: 12px 35px;
-        background-color: rgba(53, 55, 55, 0.8);
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s ease 0s;
-        font-size: 40%;
-    }
+        .bttn:hover{
+            background-color: #8ccfff;
+        }

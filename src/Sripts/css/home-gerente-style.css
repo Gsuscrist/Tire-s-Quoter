@@ -110,13 +110,41 @@ tr:hover{
 }
 
 
-.bttnsee{
+.bttn{
     background-color: #c4c6cf;
     padding: 15px;
     border-radius: 10px;
     width: 100px;
 }
 
+.bttn:hover{
+    background-color: #8ccfff;
+}
+
+.bttnsee{
+    background-color: #c4c6cf;
+    padding: 16px;
+    border-radius: 10px;
+    width: 200px;
+    justify-content: center;
+    
+}
+
 .bttnsee:hover{
     background-color: #8ccfff;
+}
+
+.divNav{
+    margin: auto;
+    align-items: center;
+    justify-content: baseline;
+}
+.merchcant{
+    padding: 10px;
+    background-color: #c4c6cf;
+    color: white;
+
+}
+a{
+    text-decoration: none;
 }
